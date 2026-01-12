@@ -261,3 +261,270 @@ Scenario Outline: Create New Job Opening
     Examples:
       | job_title | job_description      | department  | location   |
       | Dev       | Develop software     | Engineering | New York   |
+
+  @navigate_to_job_openings
+  Scenario Outline: Create New Job Opening
+    When the user clicks on the "Job Openings" module from the main menu
+    Then the Job Opening page is displayed with an "Add Job Opening" button visible
+
+  Examples:
+    |   |
+    |   |
+
+  @verify_create_job_opening_form
+  Scenario Outline: Create New Job Opening
+    When the admin clicks on the "Add Job Opening" button
+    Then the Create New Job Opening form is displayed
+    And all required fields are present
+
+  Examples:
+    | job_title       | job_description | department     |
+    | Software Engineer| Develop software| IT Department  |
+
+  @valid-job-opening
+  Scenario Outline: Create New Job Opening
+    Given the user fills in the Job Title field with "<job_title>"
+    And the user fills in the Job Description field with "<job_description>"
+    And the user selects "<department>" from the dropdown
+    And the user fills in the Location field with "<location>"
+    And the user fills in the Employment Type field with "<employment_type>"
+    When the user clicks the "Save" button
+    Then the new job opening should be created successfully
+    And the user should be redirected to the Job Openings listing page
+    And the newly created job opening should be displayed in the listing
+
+    Examples:
+      | job_title          | job_description                                                                 | department | location  | employment_type |
+      | Software Engineer   | Develop and maintain software applications, ensuring high performance and responsiveness. | Engineering | New York  | Full-time       |
+
+  @required-fields-validation
+  Scenario Outline: Create New Job Opening with All Required Fields Empty
+    When the user leaves all required fields empty
+    And the user clicks the Save button
+    Then the system displays error messages for each required field that is empty
+    And the user remains on the Create New Job Opening form
+
+    Examples:
+      | <empty_fields> |
+      |                 |
+
+  @create-job-opening
+  Scenario Outline: Create New Job Opening
+    Given the user is on the Create New Job Opening Page
+    When I fill in the Job Title field with "<job_title>"
+    And I fill in the Job Description field with "<job_description>"
+    And I select "<department>" from the Department dropdown
+    And I leave optional fields empty
+    And I click the Save button
+    Then the new job opening is created successfully
+    And the user is redirected to the Job Openings listing page
+    And the newly created job opening is displayed in the listing
+
+    Examples:
+      | job_title            | job_description                                                                     | department  |
+      | Software Engineer     | Develop and maintain software applications, ensuring high performance and responsiveness. | Engineering  |
+
+  @cancel-job-opening
+  Scenario Outline: Create New Job Opening
+    When the user clicks the "Cancel" button on the Create New Job Opening form
+    Then the user is redirected back to the Job Openings listing page
+    And no new job opening is created
+
+    Examples:
+      |    |
+      |    |
+
+  @edit_job_opening
+  Scenario Outline: Create New Job Opening
+    When the user clicks on the newly created job opening
+    And the user clicks the "Edit" button
+    And the user modifies the Job Description field
+    And the user clicks the "Save" button
+    Then the job opening is updated successfully
+    And the user is redirected to the Job Openings listing page
+    And the updated job opening details are displayed in the listing
+
+  Examples:
+    | job_opening |
+    | new_job     |
+
+@view_job_openings
+Scenario Outline: Create New Job Opening
+  When the user clicks on the "Job Openings" module
+  Then the user observes the list of job openings
+  And the newly created job opening is displayed in the list
+  And the job opening details are correct and match the entered data
+
+  Examples:
+    | job_opening_title | job_opening_description |
+    | Software Engineer  | Responsible for developing software solutions. |
+
+  @filter_job_openings
+  Scenario Outline: Create New Job Opening
+    When I click on the filter options
+    And I select a <Department> from the filter dropdown
+    And I click the Apply Filters button
+    Then job openings are filtered based on the selected criteria
+    And only relevant job openings are displayed in the listing
+
+    Examples:
+      | Department   |
+      | Engineering  |
+      | Marketing    |
+
+  @view_job_details
+  Scenario Outline: Create New Job Opening
+    Given the user navigates to the Job Openings listing page
+    When the user clicks on the newly created job opening
+    Then job opening details should be displayed correctly
+    And all fields should match the data entered during creation
+
+    Examples:
+      | job_opening_title |
+      | New Job Opening   |
+
+  @invalid-job-title
+  Scenario Outline: Create New Job Opening with Invalid Job Title
+    Given the user enters "<jobTitle>"
+    And the user fills in the Company Name with "<companyName>"
+    And the user fills in the Location with "<location>"
+    And the user fills in the Description with "<description>"
+    And the user fills in the Salary with "<salary>"
+    When the user clicks the Save button
+    Then the system displays an error message indicating the Job Title is invalid
+    And the user remains on the Create New Job Opening form
+
+    Examples:
+      | jobTitle | companyName      | location      | description         | salary |
+      | ab       | validCompanyName | validLocation | validDescription     | validSalary |
+
+  @invalid-job_description
+  Scenario Outline: Create New Job Opening
+    When I enter "<job_description>"
+    And I enter "<title>"
+    And I enter "<location>"
+    And I enter "<salary>"
+    And I select "<employment_type>"
+    And I click the "Save" button
+    Then the system displays an error message indicating the Job Description is too long
+    And the user remains on the Create New Job Opening form
+
+    Examples:
+      | job_description                                                                                                                                                                                                                     | title             | location   | salary | employment_type |
+      | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa                                                                                          | Software Engineer | New York | 80000 | Full-time       |
+
+  @invalid-department
+  Scenario Outline: Create New Job Opening with Invalid Department
+    Given the user selects "<department>" from the Department dropdown
+    And the user fills in the Job Title with "<job_title>"
+    And the user fills in the Description with "<description>"
+    And the user fills in the Location with "<location>"
+    And the user fills in the Salary with "<salary>"
+    When the user clicks the "Save" button
+    Then the system displays an error message indicating the selected Department is invalid
+    And the user remains on the Create New Job Opening form
+
+    Examples:
+      | department         | job_title         | description           | location         | salary        |
+      | Invalid Department  | Valid Job Title    | Valid Description     | Valid Location   | Valid Salary   |
+
+  @job-title-exists
+  Scenario Outline: Create New Job Opening with Existing Job Title
+    Given I enter "<job_title>" as the Job Title
+    And I enter "<company_name>" as the Company Name
+    And I enter "<location>" as the Location
+    And I enter "<description>" as the Job Description
+    And I enter "<salary>" as the Salary
+    When I click the "Save" button
+    Then the system displays an error message indicating the Job Title already exists
+    And the user remains on the Create New Job Opening form
+
+    Examples:
+      | job_title          | company_name       | location   | description | salary |
+      | Software Engineer   | Tech Solutions Inc. | New York   | a * 100     | 80000  |
+
+  @invalid-data-type
+  Scenario Outline: Create New Job Opening with Invalid Data Types
+    When I enter "<salary>" in the Salary field
+    And I enter "<job_title>" in the Job Title field
+    And I enter "<location>" in the Location field
+    And I enter "<description>" in the Description field
+    And I enter "<company>" in the Company field
+    And I click the Save button
+    Then the system displays an error message indicating invalid data type
+    And the user remains on the Create New Job Opening form
+
+    Examples:
+      | salary | job_title         | location  | description | company          |
+      | abc    | Software Engineer  | New York  | a * 100     | Tech Innovations  |
+
+  @unsaved_changes_warning
+  Scenario Outline: Create New Job Opening
+    When the user makes changes to the form without saving
+    And the user attempts to navigate to another module
+    Then the system displays a warning message about unsaved changes
+    And the user remains on the Create New Job Opening form until they confirm to leave
+
+    Examples:
+      |   |
+      |   |
+
+  @invalid-location
+  Scenario Outline: Create New Job Opening with Invalid Location
+    When I enter "<location>"
+    And I enter "<title>"
+    And I enter "<description>"
+    And I enter "<company>"
+    And I enter "<salary>"
+    And I click the Save button
+    Then the system displays an error message indicating the location is invalid
+    And the user remains on the Create New Job Opening form
+
+    Examples:
+      | location         | title             | description                       | company                | salary |
+      | !@#$%^&*()      | Software Engineer  | Develop and maintain software applications. | Tech Innovations Inc. | 80000  |
+
+  @create_job_opening_max_characters
+  Scenario Outline: Create New Job Opening
+    Given I fill in the Job Title field with the maximum allowed characters
+    And I fill in the Job Description field with the maximum allowed characters
+    And I select "<department>" from the dropdown
+    And I fill in other required fields with maximum allowed characters
+    When I click the "Save" button
+    Then a new job opening is created successfully
+    And the user is redirected to the Job Openings listing page
+    And the newly created job opening is displayed in the listing
+
+    Examples:
+      | department   |
+      | Engineering  |
+
+  @valid-job-opening
+  Scenario Outline: Create New Job Opening
+    When I create a new job opening with title "<title>", employment type "<employment_type>", experience "<experience>", salary "<salary>", description "<description>", location "<location>", start date "<start_date>", and end date "<end_date>"
+    And I click "Save"
+    And I quickly click "Add Job Opening" again
+    And I create a new job opening with title "<title2>", employment type "<employment_type2>", experience "<experience2>", salary "<salary2>", description "<description2>", location "<location2>", start date "<start_date2>", and end date "<end_date2>"
+    And I click "Save" for the second job opening
+    Then both job openings should be created successfully
+    And the user should be redirected to the Job Openings listing page after each save
+    And both job openings should be displayed in the listing
+
+    Examples:
+      | title             | employment_type | experience | salary  | description                             | location  | start_date | end_date   | title2            | employment_type2 | experience2 | salary2 | description2                             | location2  | start_date2 | end_date2   |
+      | Software Engineer | Full-time       | 5 years    | 100000  | Develop and maintain software applications. | New York  | 2023-10-01 | 2023-10-31 | Product Manager   | Part-time      | 3 years    | 80000   | Oversee product development and strategy. | Los Angeles | 2023-10-02  | 2023-10-30  |
+
+  @valid-job-creation
+  Scenario Outline: Create New Job Opening
+    Given the user fills in the Job Title field with "<job_title>"
+    And the user fills in the Job Description field with "<job_description>"
+    And the user selects "<department>" from the dropdown
+    And the user fills in other required fields with valid data
+    When the user clicks the "Save" button
+    Then a new job opening is created successfully
+    And the user is redirected to the Job Openings listing page
+    And the newly created job opening is displayed in the listing
+
+    Examples:
+      | job_title                         | job_description                                                                                                                                  | department  |
+      | Software Engineer @ Tech Co.      | We are looking for a Software Engineer who can develop & maintain applications, ensuring high performance & responsiveness. | Engineering  |
