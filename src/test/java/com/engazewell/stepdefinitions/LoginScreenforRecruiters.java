@@ -85,7 +85,7 @@ loginPage.clearEmailIdField();
 public void i_leave_the_password_field_empty() {
 loginPage.clearPasswordField();
 }
-@When("I enter {string}")
+// DUPLICATE: @When("I enter {string}")
 public void i_enter(String password) {
 loginPage.enterPassword(password);
 }

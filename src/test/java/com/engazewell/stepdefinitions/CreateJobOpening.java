@@ -38,7 +38,7 @@ createJobOpeningPage.isCreateNewJobOpeningFormOpened();
 public void the_and_buttons_should_be_displayed(String button1, String button2) {
 createJobOpeningPage.areButtonsDisplayed(button1, button2);
 }
-@When("I select {string}")
+// DUPLICATE: @When("I select {string}")
 public void i_select(String job_role) {
 createJobOpeningPage.selectJobRole(job_role);
 }
@@ -163,7 +163,7 @@ createJobOpeningPage.fillInDescription(description);
 public void the_recruiter_enters_a_valid_department() {
 createJobOpeningPage.enterValidDepartment();
 }
-@When("the recruiter selects the location {string}")
+// DUPLICATE: @When("the recruiter selects the location {string}")
 public void the_recruiter_selects_the_location(String location) {
 createJobOpeningPage.selectLocation(location);
 }
