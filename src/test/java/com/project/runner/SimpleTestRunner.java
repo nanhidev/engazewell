@@ -22,6 +22,16 @@ package com.project.runner;
             runCucumberFeature("src/test/resources/com/engazewell/features/UploadNewCandidateProfile_po.feature");
         }
     
+    @Test(priority = 2)
+        public void runLoginscreenforrecruiters() {
+            runCucumberFeature("src/test/resources/com/engazewell/features/LoginScreenforRecruiters.feature");
+        }
+    
+    @Test(priority = 3)
+        public void runCreatenewjobopening() {
+            runCucumberFeature("src/test/resources/com/engazewell/features/CreateNewJobOpening.feature");
+        }
+    
             
     private void runCucumberFeature(String featurePath) {
             String featureName = new File(featurePath).getName().replace(".feature", "");
