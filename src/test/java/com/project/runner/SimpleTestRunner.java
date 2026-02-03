@@ -10,15 +10,20 @@ package com.project.runner;
     import io.cucumber.testng.AbstractTestNGCucumberTests;
 
     @Listeners({ExtentITestListenerClassAdapter.class})
-    public class TestRunner extends AbstractTestNGCucumberTests {
-        
+    public class SimpleTestRunner extends AbstractTestNGCucumberTests {
+
         @Test(priority = 0)
         public void runCreatejobopening() {
             runCucumberFeature("src/test/resources/com/engazewell/features/CreateJobOpening.feature");
         }
     
-            
-    private void runCucumberFeature(String featurePath) {
+    @Test(priority = 1)
+        public void runUploadnewcandidateprofilePo() {
+            runCucumberFeature("src/test/resources/com/engazewell/features/UploadNewCandidateProfile_po.feature");
+        }
+    
+
+        private void runCucumberFeature(String featurePath) {
             String featureName = new File(featurePath).getName().replace(".feature", "");
 
             String[] argv = new String[] {
